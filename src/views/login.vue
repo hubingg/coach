@@ -45,7 +45,7 @@ export default {
           this.getDisabled = true
         } 
       }, 1000)
-      this.$api.checkPhone(this.phone).then((res) => {
+      this.$api.getCode(this.phone).then((res) => {
         console.log(res)
       })
     },

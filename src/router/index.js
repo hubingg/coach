@@ -4,7 +4,7 @@ Vue.use(Router)
 
 let router = new Router({
   routes: [
-    { path: '/', redirect: '/index'},
+    { path: '/', redirect: '/login'},
     {
       path: '/login',
       name: 'login',
@@ -81,11 +81,16 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
-  let title = to.meta.title
-  if (title) {
-    document.title = title
+  const name = window.localStorage.getItem("adminName")
+  if (to.name == 'login') {
+    next()
+    return 
   }
-  next()
+  if (name) {
+    next()
+  } else {bus
+    next()
+    router.push({name: 'login'})
+  }
 })
 export default router

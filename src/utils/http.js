@@ -6,7 +6,6 @@ const service = axios.create({
   timeout: 20000
 })
 
-// const usertoken = helper.getCookie('usertoken')
 
 function login () {
   const appId = 'wxb9f58c55902b2ecf'
@@ -19,7 +18,7 @@ function login () {
     window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`
   }else {
     // 看下code拼接在哪
-    helper.getHttp(`http://mp-test.kukusport.com/wechat/openid/retrive/${code}`, function(res) {
+    helper.getHttp(`http://mp-test.kukusport.com/wechat/coach/code/retrive?code=${code}&state=STATE`, function(res) {
       let data = eval("("+res+")")
       localStorage.setItem('usertoken', data.data)
     })
@@ -29,7 +28,7 @@ function login () {
 
 service.interceptors.request.use((config) => {
   // const usertoken = localStorage.getItem('usertoken') || helper.getCookie('usertoken')
-  // config.headers.Accept = 'application/json'
+  config.headers.Accept = 'application/json'
   // if (!usertoken) {
   //   login()
   //   return
@@ -38,7 +37,7 @@ service.interceptors.request.use((config) => {
   // if (config.url.indexOf('api/check')>0) {
   //   return config
   // }
-  // config.headers.usertoken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWUiOjE1MzkwNTM4MDQ1NzYsInVzZXJpZCI6IjQwMjE1NDY0NzU0Njc2Iiwib3BlbmlkIjoib2xKdjIxWm9RZkxCU01ZaFE3aHYwdTBJRllZdyJ9.GT68IPEaQT7XONH2mXcv5KGwZGG6n7ExYDv6feA18v8'
+  config.headers.usertoken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWUiOjE1NDI5MDA0MTEwMTksInVzZXJpZCI6IjUwNjIxODA2NDI3Nzg0ODA2NCIsIm9wZW5pZCI6Im9tOUEzMHYtc3o2MllRb1Y2NUlNYUFnanctNTAifQ.B9UDKNrJ5fIP45GGOFCa40LyNuqGN--xSgBhWxfSRb8; JSESSIONID=EB0F299AC7A701BD7918105323A0B0FF'
   // config.headers.usertoken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWUiOjE1NDAxMjkxMjkxMTAsInVzZXJpZCI6IjUwMTg1NTQxNjE4Njc0ODkyOCIsIm9wZW5pZCI6Im9tOUEzMG1SNnZSQ29talRBeVVJSVhGY1ZnOTgifQ.iymymlB6AMdXTv45Gu3aIYPZzRPnb1A0YJxT1qd_T-g'
   // config.headers.usertoken = usertoken
   return config
