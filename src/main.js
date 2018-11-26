@@ -34,4 +34,4 @@ if ('addEventListener' in document) {
 
 // 移动端使用vconsole调试
 import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole
-// new VConsole()
+new VConsole()

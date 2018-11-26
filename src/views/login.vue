@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { MessageBox } from 'mint-ui'
 export default {
   name: 'Login',
   data () {
@@ -59,18 +60,16 @@ export default {
     login () {
       let param = {
         phone: this.phone,
-        code: this.code
+        code: this.code,
+        orgId: this.GLOBAL.orgid
       }
       this.$api.login(param).then((res) => {
-        console.log(res)
-        this.$router.push({name: 'mineInfo', params: {phone: this.phone}})
-        // if (res.code == 0) {
-        //   if (res.data.phone) {
-        //     this.$router.push({name: 'confirmInfo'})
-        //   } else {
-        //     this.$router.push({name: 'mineInfo'})
-        //   }
-        // }
+        window.localStorage.setItem("phone", this.phone)
+        if (res.data) {
+          this.$router.push({name: 'Index'})
+        } else {
+          MessageBox.alert(res.data)
+        }
       })
     }
   }

@@ -11,15 +11,18 @@ class Api {
     this.openid = openid
   }
   getCode (phoneNumber) {
-    return $http.get(`${this.baseUrl}/api/customer/bind/${phoneNumber}`, '', {msg: '获取验证码失败！请重试或联系客服！'})
-  }
+    return $http.get(`${this.baseUrl}/coach/bind/${phoneNumber}`, '', {msg: '获取验证码失败！请重试或联系客服！'})
+  }D
   // 验证手机号
   checkPhone (phoneNumber) {
-    return $http.get(`${this.baseUrl}/api/customer/bind/${phoneNumber}`, '', {msg: '发送手机验证码失败！请重试或联系客服！'})
+    return $http.get(`${this.baseUrl}/coach/bind/${phoneNumber}`, '', {msg: '发送手机验证码失败！请重试或联系客服！'})
   }
   // 登录
   login (data) {
-    return $http.get(`${this.baseUrl}/api/coach/login/${data.phone}/${data.code}/${data.orgId}`, '', {msg: '登录失败，请联系客服！'})
+    return $http.get(`${this.baseUrl}/coach/coachLogin/${data.phone}/${data.code}/${data.orgId}`, '', {msg: '登录失败，请联系客服！'})
+  }
+  getWxConfig () {
+    return $http.get(`${this.baseUrl}/coach/coachInfo/scanInfo `, '', {msg: '请求失败！'})
   }
 }
 const api = new Api()
