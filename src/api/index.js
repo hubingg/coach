@@ -21,8 +21,8 @@ class Api {
   login (data) {
     return $http.get(`${this.baseUrl}/coach/coachLogin/${data.phone}/${data.code}/${data.orgId}`, '', {msg: '登录失败，请联系客服！'})
   }
-  getWxConfig () {
-    return $http.get(`${this.baseUrl}/coach/coachInfo/scanInfo `, '', {msg: '请求失败！'})
+  getWxConfig (data) {
+    return $http.get(`${this.baseUrl}/coach/coachInfo/scanInfo?url=${data.url}`, data, {msg: '请求失败！'})
   }
 }
 const api = new Api()
