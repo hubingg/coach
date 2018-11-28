@@ -3,26 +3,35 @@
     <div class="page-club-top">
       <div class="page-club-headpic">
         <!-- <img slot="icon" src="./../assets/images/pic-profile-photo.png"> -->
+        <img :src="clubInfo.logo" />
       </div>
       <div class="page-club-name">
-        雪乐山(北京)俱乐部
+        {{clubInfo.name}}
       </div>
     </div>
     <div class="course-info">
       <div class="course-info-item">
-        <span class="item-label">本月总课时</span>
+        <span class="item-label">本月总课时</span></br>
         <span class="item-value">
-          <span class="item-value-hours">40</span>
+          <span class="item-value-hours"></span>
           小时
         </span>
       </div>
       <span class="item-border"></span>
       <div class="course-info-item">
         <span class="item-label">私教课时</span>
+        <span class="item-value">
+          <span class="item-value-hours">{{instructorTimes.sumHours}}</span>
+          小时
+        </span>
       </div>
       <span class="item-border"></span>
       <div class="course-info-item">
-        <span class="item-label">团课课时</span>
+        <span class="item-label">团课课时</span></br>
+        <span class="item-value">
+          <span class="item-value-hours"></span>
+          小时
+        </span>
       </div>
     </div>
     <div class="page-bottm">
@@ -67,12 +76,28 @@ export default {
   name: 'Index',
   data () {
     return {
+      instructorTimes: '',
+      clubInfo: {}
     }
   },
   methods: {
-    getUserInfo () {
-      this.$api.getUserInfo().then((res) => {
+    getClub () {
+      let param = {
+        id: this.GLOBAL.orgid
+      }
+      this.$api.getClub(param).then(res => {
+        this.clubInfo = res.data
+      })
+    },
+    getCoachHours () {
+      let coachInfo =  Helper.getStorage('coachInfo')
+      let param = {
+        instructorId: coachInfo.id,
+        orgId: this.GLOBAL.orgid
+      }
+      this.$api.getCoachHours(param).then((res) => {
         let data = res.data
+        this.instructorTimes = data.instructorTimes
         Helper.setStorage('userInfo', JSON.stringify(data))
       })
     },
@@ -109,18 +134,16 @@ export default {
           jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
         })
         wx.error(function(res) {
-          console.log(res)
           alert("出错了：" + res.errMsg);//这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
         });
-        wx.ready(function(){
-          console.log("成功配置微信js")
+        wx.ready(() => {
           wx.scanQRCode({
             needResult : 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
             scanType : [ "qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
-            success : function(res) {
-              console.log(res)
-              // var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            success : res => {
+              var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
               // window.location.href = result;//因为我这边是扫描后有个链接，然后跳转到该页面
+              this.checkCourse(result)
             },
             error : function(){
               console.log('123');
@@ -128,10 +151,26 @@ export default {
           })
         })
       })
+    },
+    // 核销课程
+    checkCourse (result) {
+      let courseCode = Helper.getParamsFromUrl('courseCode', result)
+      let orgId = Helper.getParamsFromUrl('orgId', result)
+      let param = {
+        courseCode,
+        orgId
+      }
+      this.$api.checkCourse(param).then(res => {
+        let data = res.data
+        if (data.status) {
+          console.log("扫码成功")
+        }
+      })
     }
   },
   created() {
-    
+    this.getCoachHours()
+    this.getClub()
   }
 }
 </script>

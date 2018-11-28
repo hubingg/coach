@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import Helper from '@/utils/helper'
 import { MessageBox } from 'mint-ui'
 export default {
   name: 'Login',
@@ -64,8 +65,9 @@ export default {
         orgId: this.GLOBAL.orgid
       }
       this.$api.login(param).then((res) => {
-        window.localStorage.setItem("phone", this.phone)
-        if (res.data) {
+        Helper.setStorage("phone", this.phone)
+        Helper.setStorage("coachInfo", JSON.stringify(res.data))
+        if (res.code === 0) {
           this.$router.push({name: 'Index'})
         } else {
           MessageBox.alert(res.data)

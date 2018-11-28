@@ -18,6 +18,15 @@ const helper = {
         return null; 
     }
  },
+ getParamsFromUrl (name, url) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+  var r = url.substr(1).match(reg);  //匹配目标参数  
+  if (r != null) {
+      return unescape(r[2]);  //返回参数值 
+  } else {
+      return null; 
+  }
+ },
   getHttp (url, callback) {
     var xhr=new XMLHttpRequest()
     xhr.open("get", url)
@@ -37,6 +46,7 @@ const helper = {
     window.localStorage.setItem(key, value)
   },
   getStorage (key) {
+    console.log(window.localStorage.getItem(key))
     return JSON.parse(window.localStorage.getItem(key)) || {}
   },
   formatMonthDay (time) {

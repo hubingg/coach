@@ -29,17 +29,17 @@ function login () {
 service.interceptors.request.use((config) => {
   const coachToken = localStorage.getItem('coachToken') || helper.getCookie('coachToken')
   config.headers.Accept = 'application/json'
-  // if (!coachToken) {
-  //   login()
-  //   return
-  // }
+  if (!coachToken) {
+    login()
+    return
+  }
   // console.log(1111)
   // if (config.url.indexOf('api/check')>0) {
   //   return config
   // }
   // config.headers.coachToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWUiOjE1NDI5MDA0MTEwMTksInVzZXJpZCI6IjUwNjIxODA2NDI3Nzg0ODA2NCIsIm9wZW5pZCI6Im9tOUEzMHYtc3o2MllRb1Y2NUlNYUFnanctNTAifQ.B9UDKNrJ5fIP45GGOFCa40LyNuqGN--xSgBhWxfSRb8; JSESSIONID=EB0F299AC7A701BD7918105323A0B0FF'
-  config.headers.coachToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvbTlBMzBtUjZ2UkNvbWpUQXlVSUlYRmNWZzk4IiwibG9naW5UaW1lIjoxNTQzMjQ0MTgyMDYwfQ.G8v0hApdW31yUmC_W7o3PO1YU5QgrfXmMlBGQzB07V0'
-  // config.headers.coachToken = coachToken
+  // config.headers.coachToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvbTlBMzBtUjZ2UkNvbWpUQXlVSUlYRmNWZzk4IiwibG9naW5UaW1lIjoxNTQzMjQ0MTgyMDYwfQ.G8v0hApdW31yUmC_W7o3PO1YU5QgrfXmMlBGQzB07V0'
+  config.headers.coachToken = coachToken
   return config
 })
 
@@ -47,12 +47,12 @@ service.interceptors.request.use((config) => {
 
 // respone interceptor
 // service.interceptors.response.use((response) => {
-//   console.log(response.data)
-//   if (status === 200) {
-//     return Promise.resolve(response)
-//   } else {
-//     return Promise.reject(response)
-//   }
+//   console.log(response)
+//   // if (status === 200) {
+//   //   return Promise.resolve(response)
+//   // } else {
+//   //   return Promise.reject(response)
+//   // }
 // })
 
 function getToken() {
