@@ -2,10 +2,11 @@
   <div class="mine">
     <div class="mine-top">
       <div class="mine-top-headpic">
-        <img slot="icon" src="./../../assets/images/mine-image.png">
+        <!-- <img slot="icon" src="./../../assets/images/mine-image.png"> -->
+        <img :src="clubInfo.logo" />
       </div>
       <div class="mine-top-name">
-        雪乐山(北京)俱乐部
+        {{clubInfo.name}}
       </div>
     </div>
     <div class="ratio-info">
@@ -60,6 +61,7 @@ export default {
   name: 'Mine',
   data () {
     return {
+      clubInfo: ''
     }
   },
   methods: {
@@ -74,6 +76,7 @@ export default {
     }
   },
   created() {
+    this.clubInfo = Helper.getStorage('clubInfo')
   }
 }
 </script>

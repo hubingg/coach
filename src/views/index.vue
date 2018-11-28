@@ -77,7 +77,8 @@ export default {
   data () {
     return {
       instructorTimes: '',
-      clubInfo: {}
+      clubInfo: {},
+      courseCode: ''
     }
   },
   methods: {
@@ -87,6 +88,7 @@ export default {
       }
       this.$api.getClub(param).then(res => {
         this.clubInfo = res.data
+        Helper.setStorage('clubInfo', JSON.stringify(this.clubInfo))
       })
     },
     getCoachHours () {
@@ -143,28 +145,13 @@ export default {
             success : res => {
               var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
               // window.location.href = result;//因为我这边是扫描后有个链接，然后跳转到该页面
-              this.checkCourse(result)
+              this.$router.push({name: 'ConfirmCourse', params: {resultStr: result}})
             },
             error : function(){
               console.log('123');
             }
           })
         })
-      })
-    },
-    // 核销课程
-    checkCourse (result) {
-      let courseCode = Helper.getParamsFromUrl('courseCode', result)
-      let orgId = Helper.getParamsFromUrl('orgId', result)
-      let param = {
-        courseCode,
-        orgId
-      }
-      this.$api.checkCourse(param).then(res => {
-        let data = res.data
-        if (data.status) {
-          console.log("扫码成功")
-        }
       })
     }
   },

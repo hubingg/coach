@@ -39,23 +39,57 @@
       </div>
     </div>
 
-    <div class="btn">
+    <div class="btn" @click="checkCourse">
       确认到课
     </div>
   </div>
 </template>
 
 <script>
+import Helper from '@/utils/helper'
 export default {
   name: 'confirmCourse',
   data () {
     return {
+      courseCode: '',
+      orgId: '',
+      presale
     }
   },
   methods: {
     getCode () {
       
+    },
+    getPresale () {
+      let param = {
+        courseCode: this.courseCode,
+        orgId: this.orgId
+      }
+      this.$api.getPresale(param).then(res => {
+
+      })
+    },
+    // 核销课程
+    checkCourse () {
+      let param = {
+        courseCode: this.courseCode,
+        orgId: this.orgId
+      }
+      this.$api.checkCourse(param).then(res => {
+        let data = res.data
+        if (data.status) {
+          this.$router.push({name: 'Index'})
+        }
+      })
     }
+  },
+  created () {
+    let result = this.$route.params.resultStr
+    let courseCode = Helper.getParamsFromUrl('courseCode', result)
+    let orgId = Helper.getParamsFromUrl('orgId', result)
+    this.courseCode = courseCode
+    this.orgId = orgId
+    this.getPresale()
   }
 }
 </script>
