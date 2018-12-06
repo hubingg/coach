@@ -2,9 +2,9 @@
   <div class="c-login">
     <div class="c-login-header">
       <span class="c-logo">
-        <!-- <img src="./../assets/images/perch-60x60-living example.png" /> -->
+        <img :src="clubInfo.logo" />
       </span>
-      <span class="c-login-clubname">雪乐山(北京)俱乐部</span>
+      <span class="c-login-clubname">{{clubInfo.name}}</span>
     </div>
     <div class="c-login-form">
       <mt-field placeholder="请输入手机号码" type="tel" v-model="phone" :attr="{ maxlength: 11 }" @input="handleChange"></mt-field>
@@ -29,10 +29,19 @@ export default {
       phone: '',
       code: '',
       codeText: '获取验证码',
-      getDisabled: false
+      getDisabled: false,
+      clubInfo: {}
     }
   },
   methods: {
+    getClub () {
+      let param = {
+        id: this.GLOBAL.orgid
+      }
+      this.$api.getClub(param).then(res => {
+        this.clubInfo = res.data
+      })
+    },
     getCode () {
       if (!this.getDisabled) return
       let num = 60
@@ -74,6 +83,9 @@ export default {
         }
       })
     }
+  },
+  created () {
+    this.getClub()
   }
 }
 </script>
@@ -91,6 +103,10 @@ export default {
     align-items center
     padding 0.4rem
     padding-bottom 1rem
+    .c-logo
+      display inline-block
+      width 1.2rem
+      height 1.2rem
     .c-login-clubname
       margin-top 0.4rem
       font-size 0.32rem

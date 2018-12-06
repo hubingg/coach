@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       orderItems: [1],
-      selected: ''
+      selected: 'group'
     }
   },
   props: {

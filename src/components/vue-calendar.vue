@@ -179,14 +179,20 @@ export default {
   .cal-body
     width 100%
     .cal-weeks
+      height 34px
       width 100%
+      padding 0 17px
       overflow hidden
       text-align center
       display flex
       justify-content space-between
+      border-bottom: 1px solid #E6E6E6;
+      margin-bottom 10px
       .item
         flex 1
-        line-height 1rem
+        line-height 34px
+        font-size: 14px;
+        color: #515151;
     .cal-dates
       width 100%
       // overflow hidden
@@ -195,6 +201,8 @@ export default {
         width 100%
         display flex
         justify-content space-between
+        padding 0 17px
+        padding-bottom 10px
         .item
           // flex 1
           border-radius 50%

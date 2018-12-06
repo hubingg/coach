@@ -92,7 +92,12 @@ export default {
       })
     },
     getCoachHours () {
-      let coachInfo =  Helper.getStorage('coachInfo')
+      let coachInfo =  Helper.getStorage('coachInfo') || {}
+      console.log(coachInfo)
+      if (!coachInfo.id) {
+        this.$router.push({name: 'login'})
+        return
+      }
       let param = {
         instructorId: coachInfo.id,
         orgId: this.GLOBAL.orgid
@@ -109,7 +114,7 @@ export default {
     },
     // 业绩
     toAchievement () {
-      // this.$router.push({name: 'Achievement'})
+      this.$router.push({name: 'Achievement'})
     },
     toCourse () {
       this.$router.push({name: 'Course'})
@@ -118,10 +123,13 @@ export default {
       this.$router.push({name: 'ConfirmCourse'})
     },
     toSchedule () {
-      // this.$router.push({name: 'Schedule'})
+      this.$router.push({name: 'Schedule'})
     },
     // 扫一扫
     toScanCode () {
+      // let result = 'http://mp-test.kukusport.com/reservation_check_in?&reservation.id=63&nonce=8LNTYSppIl1SCW5Ey4UjKn7nimIZU3AG&timstamp1543722865&sign=1467325EC2E032362593B97BE9ABDF16&courseCode=00000063&orgId=1'
+      // this.$router.push({name: 'ConfirmCourse', params: {resultStr: result}})
+      // return
       let param = {
         url: (window.location.href).split('#')[0]
       }
@@ -158,6 +166,7 @@ export default {
   created() {
     this.getCoachHours()
     this.getClub()
+    console.log(1)
   }
 }
 </script>

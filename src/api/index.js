@@ -31,7 +31,7 @@ class Api {
     return $http.get(`${this.baseUrl}/coach/coachInfo/hours/${data.instructorId}/${data.orgId}`, '', {msg: '请求失败！'})
   }
   checkCourse (data) {
-    return $http.get(`${this.baseUrl}/coach/coachInfo/courseCheck?courseCode=${data.courseCode}&orgId=${data.orgId}`, '', {msg: '核销课程失败！'})
+    return $http.post(`${this.baseUrl}/coach/coachInfo/courseCheck`, data, {msg: '核销课程失败！'})
   }
   getPresale (data) {
     return $http.get(`${this.baseUrl}/coach/coachInfo/scanCourse?courseCode=${data.courseCode}&orgId=${data.orgId}`, '', {msg: '获取排期信息失败！'})

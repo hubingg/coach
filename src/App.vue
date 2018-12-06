@@ -16,19 +16,13 @@ export default {
     }
   },
   methods: {
-    getUserInfo () {
-      this.$api.getUserInfo().then((res) => {
-        let data = res.data
-        Helper.setStorage('userInfo', JSON.stringify(data))
-      })
-    }
+
   },
   created() {
     let orgid = Helper.getUrlParam('orgid')
     this.GLOBAL.orgid = orgid
     console.log(orgid)
     window.localStorage.setItem('orgid', orgid)
-    // this.getUserInfo()
   }
 }
 </script>

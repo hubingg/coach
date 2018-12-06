@@ -6,34 +6,35 @@
       </div>
       <div class="member-info-content">
         <div class="member-info-text">
-          张某某
-          <span class="c-tag c-tag-men"></span>
-          <span class="c-tag c-tag-women"></span>
-          <span class="c-tag-kid"></span>
-          <span class="c-tag-adult"></span>
+          {{orderReservation.name}}
+          <span class="c-tag c-tag-men" v-if="orderReservation.sex == '男'"></span>
+          <span class="c-tag c-tag-women" v-else></span>
+          <span class="c-tag-adult" v-if="orderReservation.isadult"></span>
+          <span class="c-tag-kid" v-else></span>
         </div>
         <div class="member-info-phone">
-          150 3456 7890
+          {{orderReservation.phone}}
         </div>
       </div>
     </div>
     <div class="course-info">
       <div class="course-info-title">
-        团课 | 入门 | 课程名称
-        <span class="order-tag order-tag-single">单板</span>
+        私教课 | {{orderPresaleProducts && orderPresaleProducts[0].coursename}}
+        <span class="order-tag order-tag-single" v-if="orderPresaleProducts[0].style == '单板'">单板</span>
+        <span class="order-tag order-tag-double" v-else>双板</span>
       </div>
       <div class="course-info-content">
-        <div class="info-item">
-          <div class="info-item-index">05</div>
+        <div class="info-item" v-for="(item, index) in orderPresaleProducts" :key="index">
+          <div class="info-item-index">{{index+1 | formatIndex}}</div>
           <div class="info-item-value">
-            <div class="date">2018年8月12日 13:00-15:00</div>
+            <div class="date">{{item.starttime | formatYearMonthDayV}} {{item.starttime | formatHourMinutes}}-{{item.endtime |  formatHourMinutes}}</div>
             <div class="text">
-              <span class="location"><i class="icon-location"></i>崇礼区万龙</span>
-              <span class="name"><i class="icon-name"></i>Andy  Lee</span>
+              <span class="location"><i class="icon-location"></i>{{item.locationlist}}</span>
+              <span class="name"><i class="icon-name"></i>{{item.instructorname}}</span>
             </div>
           </div>
           <div class="info-item-radio">
-            <span class="c-select c-select-true"></span>
+            <span class="c-select" :class="item.check ? 'c-select-true':'c-select-false'" @click="select($event,item, index)"></span>
           </div>
         </div>
       </div>
@@ -47,16 +48,49 @@
 
 <script>
 import Helper from '@/utils/helper'
+import { MessageBox } from 'mint-ui'
 export default {
   name: 'confirmCourse',
   data () {
     return {
       courseCode: '',
       orgId: '',
-      presale
+      presale: {},
+      orderReservation: {},
+      orderPresaleProducts: []
+    }
+  },
+  computed: {
+    selectPresale () {
+      let arr = []
+      this.orderPresaleProducts.forEach(item => {
+        if (item.check) {
+          arr.push(item)
+        }
+      })
+      return arr
+    }
+  },
+  filters: {
+    formatYearMonthDayV (val) {
+      return Helper.formatYearMonthDayV(val)
+    },
+    formatHourMinutes (val) {
+      return Helper.formatHourMinutes(val)
+    },
+    formatIndex (val) {
+      if (val < 10) {
+        return '0' + val
+      }
+      return val
     }
   },
   methods: {
+    select (e, item, index) {
+      this.orderPresaleProducts[index].check = !item.check 
+      this.orderPresaleProducts.splice()
+      e.preventDefault()
+    },
     getCode () {
       
     },
@@ -66,19 +100,45 @@ export default {
         orgId: this.orgId
       }
       this.$api.getPresale(param).then(res => {
-
+        this.orderReservation = res.data.orderReservation || {}
+        this.orderPresaleProducts = res.data.orderPresaleProducts || []
       })
     },
     // 核销课程
     checkCourse () {
+      if (!this.selectPresale.length) {
+        MessageBox.alert("请先选择课程")
+        return
+      }
+      let coachInfo =  Helper.getStorage('coachInfo')
       let param = {
         courseCode: this.courseCode,
-        orgId: this.orgId
+        orgId: this.orgId - 0,
+        presaleId: this.selectPresale[0].presaleid,// 私教就一个课程
+        coachId: this.selectPresale[0].instructorid,
+        orderNo: this.orderPresaleProducts[0].orderno,
+        style: this.orderPresaleProducts[0].style,
+        locationList: this.orderPresaleProducts[0].locationlist
       }
       this.$api.checkCourse(param).then(res => {
         let data = res.data
         if (data.status) {
-          this.$router.push({name: 'Index'})
+          MessageBox({
+            title: '提示',
+            message: '确认成功！',
+            showCancelButton: false,
+            // cancelButtonText: '取消',
+            confirmButtonText: '确认',
+            confirmButtonClass: 'ok-btn'
+          }).then(action => {
+            if (action === 'confirm') {
+              this.$router.push({name: 'Index'})
+            } else {
+              return
+            }
+          })
+        }else {
+          MessageBox.alert(data.description)
         }
       })
     }
