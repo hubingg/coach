@@ -1,14 +1,15 @@
 import axios from 'axios'
 import helper from './helper'
 import { MessageBox, Indicator } from 'mint-ui'
-
+import config from '@/utils/config'
 const service = axios.create({
   timeout: 20000
 })
 
 
 function login () {
-  const appId = 'wxb9f58c55902b2ecf'
+  // const appId = 'wxb9f58c55902b2ecf'
+  const appId = config.appId
   const code = helper.getUrlParam('code')
   // const code = '021J6epM0JhLo42r8SoM0dSbpM0J6epb'
   const local = window.location.href
@@ -18,7 +19,7 @@ function login () {
     window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`
   }else {
     // 看下code拼接在哪
-    helper.getHttp(`http://mp-test.kukusport.com/wechat/coach/code/retrive?code=${code}&state=STATE`, function(res) {
+    helper.getHttp(`https://mp.kukusport.com/wechat/coach/code/retrive?code=${code}&state=STATE`, function(res) {
       let data = eval("("+res+")")
       localStorage.setItem('coachToken', data.data)
     })

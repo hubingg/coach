@@ -1,9 +1,10 @@
 // baseUrl,config in config/index.js
 import $http from '@/utils/http'
 const nodeApi = process.NODE_API || 'dev'
-const openid = 'olJv21ZoQfLBSMYhQ7hv0u0IFYYw'
+import config from '@/utils/config'
+const openid = config.appId
 const url = {
-  baseUrl: 'http://mp-test.kukusport.com'
+  baseUrl: config.baseUrl
 }
 class Api {
   constructor () {
