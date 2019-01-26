@@ -19,7 +19,7 @@ function login () {
     window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`
   }else {
     // 看下code拼接在哪
-    helper.getHttp(`https://mp.kukusport.com/wechat/coach/code/retrive?code=${code}&state=STATE`, function(res) {
+    helper.getHttp(`https://instructor.kukusport.com/wechat/coach/code/retrive?code=${code}&state=STATE`, function(res) {
       let data = eval("("+res+")")
       localStorage.setItem('coachToken', data.data)
     })
