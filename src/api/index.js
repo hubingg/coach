@@ -4,15 +4,18 @@ const nodeApi = process.NODE_API || 'dev'
 import config from '@/utils/config'
 const openid = config.appId
 const url = {
-  baseUrl: config.baseUrl
+  baseUrl: config.baseUrl,
+  imgUrl: 'http://kuku-avatars.oss-cn-beijing.aliyuncs.com/'
 }
 class Api {
   constructor () {
     this.baseUrl = url.baseUrl
+    this.imgUrl = url.imgUrl
     this.openid = openid
   }
   getClub (data) {
-    return $http.get(`${this.baseUrl}/coach/coachInfo/brief/${data.id}`, '', {msg: '获取俱乐部信息失败！'})
+    // return $http.get(`${this.baseUrl}/coach/coachInfo/brief/${data.id}`, '', {msg: '获取俱乐部信息失败！'})
+    return $http.get(`${this.baseUrl}/coach/coachLogin/brief/${data.id}`, '', {msg: '获取俱乐部信息失败！'})
   }
   getCode (phoneNumber) {
     return $http.get(`${this.baseUrl}/coach/bind/${phoneNumber}`, '', {msg: '获取验证码失败！请重试或联系客服！'})

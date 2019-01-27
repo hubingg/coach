@@ -3,7 +3,7 @@
     <div class="page-club-top">
       <div class="page-club-headpic">
         <!-- <img slot="icon" src="./../assets/images/pic-profile-photo.png"> -->
-        <img :src="clubInfo.logo" />
+        <img :src="imgUrl + clubInfo.logo" />
       </div>
       <div class="page-club-name">
         {{clubInfo.name}}
@@ -78,7 +78,8 @@ export default {
     return {
       instructorTimes: '',
       clubInfo: {},
-      courseCode: ''
+      courseCode: '',
+      imgUrl: this.$api.imgUrl
     }
   },
   methods: {

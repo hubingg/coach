@@ -2,7 +2,7 @@
   <div class="c-login">
     <div class="c-login-header">
       <span class="c-logo">
-        <img :src="clubInfo.logo" />
+        <img :src="imgUrl + clubInfo.logo" />
       </span>
       <span class="c-login-clubname">{{clubInfo.name}}</span>
     </div>
@@ -30,7 +30,8 @@ export default {
       code: '',
       codeText: '获取验证码',
       getDisabled: false,
-      clubInfo: {}
+      clubInfo: {},
+      imgUrl: this.$api.imgUrl
     }
   },
   methods: {
