@@ -9,7 +9,7 @@
           {{orderReservation.name}}
           <span class="c-tag c-tag-men" v-if="orderReservation.sex == '男'"></span>
           <span class="c-tag c-tag-women" v-else></span>
-          <span class="c-tag-adult" v-if="orderReservation.isadult"></span>
+          <span class="c-tag-adult" v-if="orderReservation.isAdult == 1"></span>
           <span class="c-tag-kid" v-else></span>
         </div>
         <div class="member-info-phone">
